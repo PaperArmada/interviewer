@@ -10,10 +10,10 @@ from streamlit.runtime.scriptrunner import get_script_run_ctx
 from client import AgentClient
 from schema import ChatHistory, ChatMessage
 from schema.models import (
-    AnthropicModelName,
-    AWSModelName,
-    GoogleModelName,
-    GroqModelName,
+    # AnthropicModelName,
+    # AWSModelName,
+    # GoogleModelName,
+    # GroqModelName,
     OpenAIModelName,
     FakeModelName,
 )
@@ -80,14 +80,14 @@ async def main() -> None:
         st.session_state.thread_id = thread_id
 
     models = {
-        "OpenAI GPT-4o-mini (streaming)": OpenAIModelName.GPT_4O_MINI,
         "Placeholder": FakeModelName.FAKE,
+        "OpenAI GPT-4o-mini (streaming)": OpenAIModelName.GPT_4O_MINI,
     }
     # Config options
     with st.sidebar:
         st.header(f"{APP_ICON} {APP_TITLE}")
         ""
-        "Proof of concept automated interview runner, with employer / candidate understanding and adaptive responses.\n\nPowered by LangGraph, FastAPI, and Streamlit."
+        "Proof of concept automated interview facilitator, with employer / candidate understanding and adaptive responses.\n\nPowered by LangGraph, FastAPI, and Streamlit."
         with st.popover(":material/settings: Settings", use_container_width=True):
             m = st.radio("LLM to use", options=models.keys())
             model = models[m]
