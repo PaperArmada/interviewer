@@ -15,6 +15,7 @@ from schema.models import (
     GoogleModelName,
     GroqModelName,
     OpenAIModelName,
+    FakeModelName,
 )
 from schema.task_data import TaskData, TaskDataStatus
 
@@ -29,7 +30,7 @@ from schema.task_data import TaskData, TaskDataStatus
 # The app heavily uses AgentClient to interact with the agent's FastAPI endpoints.
 
 
-APP_TITLE = "Agent Service Toolkit"
+APP_TITLE = "Agentic Interview"
 APP_ICON = "🧰"
 
 
@@ -80,25 +81,22 @@ async def main() -> None:
 
     models = {
         "OpenAI GPT-4o-mini (streaming)": OpenAIModelName.GPT_4O_MINI,
-        "Gemini 1.5 Flash (streaming)": GoogleModelName.GEMINI_15_FLASH,
-        "Claude 3 Haiku (streaming)": AnthropicModelName.HAIKU_3,
-        "llama-3.1-70b on Groq": GroqModelName.LLAMA_31_70B,
-        "AWS Bedrock Haiku (streaming)": AWSModelName.BEDROCK_HAIKU,
+        "Placeholder": FakeModelName.FAKE,
     }
     # Config options
     with st.sidebar:
         st.header(f"{APP_ICON} {APP_TITLE}")
         ""
-        "Full toolkit for running an AI agent service built with LangGraph, FastAPI and Streamlit"
+        "Proof of concept automated interview runner, with employer / candidate understanding and adaptive responses.\n\nPowered by LangGraph, FastAPI, and Streamlit."
         with st.popover(":material/settings: Settings", use_container_width=True):
             m = st.radio("LLM to use", options=models.keys())
             model = models[m]
             agent_client.agent = st.selectbox(
                 "Agent to use",
                 options=[
-                    "research-assistant",
+                    # "research-assistant",
                     "chatbot",
-                    "bg-task-agent",
+                    # "bg-task-agent",
                 ],
             )
             use_streaming = st.toggle("Stream results", value=True)
@@ -109,33 +107,30 @@ async def main() -> None:
                 "https://github.com/JoshuaC215/agent-service-toolkit/blob/main/media/agent_architecture.png?raw=true"
             )
             "[View full size on Github](https://github.com/JoshuaC215/agent-service-toolkit/blob/main/media/agent_architecture.png)"
-            st.caption(
-                "App hosted on [Streamlit Cloud](https://share.streamlit.io/) with FastAPI service running in [Azure](https://learn.microsoft.com/en-us/azure/app-service/)"
-            )
 
         if st.button(":material/schema: Architecture", use_container_width=True):
             architecture_dialog()
 
-        with st.popover(":material/policy: Privacy", use_container_width=True):
-            st.write(
-                "Prompts, responses and feedback in this app are anonymously recorded and saved to LangSmith for product evaluation and improvement purposes only."
-            )
+        # with st.popover(":material/policy: Privacy", use_container_width=True):
+        #     st.write(
+        #         "Prompts, responses and feedback in this app are anonymously recorded and saved to LangSmith for product evaluation and improvement purposes only."
+        #     )
 
         st.markdown(
             f"Thread ID: **{st.session_state.thread_id}**",
             help=f"Set URL query parameter ?thread_id={st.session_state.thread_id} to continue this conversation",
         )
 
-        "[View the source code](https://github.com/JoshuaC215/agent-service-toolkit)"
-        st.caption(
-            "Made with :material/favorite: by [Joshua](https://www.linkedin.com/in/joshua-k-carroll/) in Oakland"
-        )
+        "[View the source code](https://github.com/PaperArmada/interviewer)"
+        # st.caption(
+        #     "Made with :material/favorite: by [Joshua](https://www.linkedin.com/in/joshua-k-carroll/) in Oakland"
+        # )
 
     # Draw existing messages
     messages: list[ChatMessage] = st.session_state.messages
 
     if len(messages) == 0:
-        WELCOME = "Hello! I'm an AI-powered research assistant with web search and a calculator. I may take a few seconds to boot up when you send your first message. Ask me anything!"
+        WELCOME = "Hello and welcome to your interview!\n\nI'm your AI interviewer, Sparky, here to guide you through this process and make it as smooth as possible. I'll be asking you some questions to learn more about your experiences and skills.\n\nFeel free to take your time with each answer, and if you have any questions for me, don't hesitate to ask.\n\n\nWhenever you're ready, let's get started by having you introduce yourself and tell me a little about your background!"
         with st.chat_message("ai"):
             st.write(WELCOME)
 
