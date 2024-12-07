@@ -162,10 +162,10 @@ async def main() -> None:
             st.chat_message("ai").write(response.content)
         st.rerun()  # Clear stale containers
 
-    # If messages have been generated, show feedback widget
-    if len(messages) > 0:
-        with st.session_state.last_message:
-            await handle_feedback()
+    # # If messages have been generated, show feedback widget
+    # if len(messages) > 0:
+    #     with st.session_state.last_message:
+    #         await handle_feedback()
 
 
 async def draw_messages(
